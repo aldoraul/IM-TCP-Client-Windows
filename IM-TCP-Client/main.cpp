@@ -23,6 +23,7 @@ using namespace std;
 
 char *server = "192.168.10.200";
 char *port = "34567";
+int typeOfMessage = 0;
 char server_reply[1000];
 void listen(void *);		// listen to socket continuesly with second thread
 void *get_in_addr(struct sockaddr *);	// used to see whether remote addr is IPv4 or IPv6
@@ -107,20 +108,33 @@ int main() {
 	_beginthread(listen, 0, (void *)&s);  // create listen function for second thread
 	char action = 'c';
 
-	while (action != 'q') {
-
-		cout << "Enter q (for quit), s (send message), or c (check messages)" << endl;
-		cin >> action;
-
+	while (action != 'q' || action != 'Q') {
+		if (typeOfMessage == 0) {
+			cout << "Enter q (for quit), s (send message), or c (check messages)" << endl;
+			cin >> action;
+		}
+		else {
+			action = 'c';
+		}
 		switch (action) {
+			case 'S':
 			case 's':
 			{
 				break;
 			}
+			case 'C':
 			case 'c':
 			{
+				if (typeOfMessage == 0)
+					printf("No new Messages\n");
+				else {
+					printf("New Message Arrived \n");
+					cout << server_reply << endl;
+					typeOfMessage == 0;
+				}
 				break;
 			}
+			case 'Q':
 			case 'q':
 			{
 				break;
@@ -160,18 +174,29 @@ void listen(void * socket) {
 	int recv_size;
 	int last_char = 0;
 	SOCKET s;
+	string num;
 	s = *(SOCKET *)socket;
 	char new_reply[500];
-
-	do {
-		if ((recv_size = recv(s, new_reply, 500, 0)) != SOCKET_ERROR) {
-			for (int i = last_char; i < (last_char + recv_size); i++) {
-				server_reply[i] = new_reply[i];
+	while (true) {
+		if (typeOfMessage == 0){
+			do {
+				if ((recv_size = recv(s, new_reply, 500, 0)) != SOCKET_ERROR) {
+					for (int i = last_char; i < (last_char + recv_size); i++) {
+						server_reply[i] = new_reply[i];
+					}
+					last_char += recv_size;
 				}
-			last_char += recv_size;
+			} while (new_reply[recv_size] != '#');
+			if (isdigit(server_reply[0])) {
+				num = server_reply[0];
+				typeOfMessage = server_reply[0] - '0';
 			}
-	} while (new_reply[recv_size] != '#');
-	printf("\n\nNew Message is %s\n", server_reply);
+			else {
+				typeOfMessage = 5; // for error
+			}
+		}
+	}
+	//printf("\n\nNew Message is %s\n", server_reply);
 }
 
 void *get_in_addr(struct sockaddr *sa) {
