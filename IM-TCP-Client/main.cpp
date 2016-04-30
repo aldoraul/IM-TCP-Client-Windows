@@ -17,21 +17,22 @@
 #include<string>
 #include<list>
 #include<iostream>
+#include"cipher.h"
 
 using namespace std;
 
-CONST CHAR *SERVER = "192.168.10.200";
-CONST CHAR *PORT = "34567";
+char *server = "192.168.10.200";
+char *port = "34567";
 char server_reply[1000];
 void listen(void *);		// listen to socket continuesly with second thread
 void *get_in_addr(struct sockaddr *);	// used to see whether remote addr is IPv4 or IPv6
 void sendMsg(int);
-
+string encryptMessage(string);
 struct active_user {
 	string user;
-	string addr;
-	string port;
-	active_user(string user1, string addr1, string port1) :
+	char *addr;
+	char *port;
+	active_user(string user1, char *addr1, char *port1) :
 		user(user1), addr(addr1), port(port1) {}
 
 };
@@ -41,7 +42,7 @@ SOCKET s;
 int main() {
 	WSADATA wsa;
 
-	struct active_user server1 = active_user("server", SERVER, PORT);
+	struct active_user server1 = active_user("server", server, port);
 	users.push_back(server1);
 	//	new 4.26.16-00:18
 	struct sockaddr_in server;
@@ -60,9 +61,11 @@ int main() {
 	memset(&server_struct, 0, sizeof server_struct);
 	server_struct.ai_family = AF_UNSPEC;
 	server_struct.ai_socktype = SOCK_STREAM;
-
 	//Create a socket	
-	if ((return_value = getaddrinfo("192.168.10.200", "34567", &server_struct, &servinfo)) != 0) {
+	char *ser;
+	ser = "192.168.10.200";
+
+	if ((return_value = getaddrinfo(server1.addr, server1.port, &server_struct, &servinfo)) != 0) {
 		printf("getaddrinfo: %s\n", gai_strerror(return_value));
 		return 1;
 	}
@@ -83,16 +86,16 @@ int main() {
 
 	//Connect to remote/local TCP server	
 	connect(s, servinfo->ai_addr, servinfo->ai_addrlen);
-	printf("Connected to %s\n", SERVER);
-	char *message;
-	message = "hello world";
-	if (send(s, message, strlen(message), 0) < 0) {
-		cout << "Send Failed" << endl;
-		return 1;
-	}
-	else {
-		cout << "sent" << endl;
-	}
+	printf("Connected to %s\n", server1.addr);
+	//char *message;
+	//message = "hello world";
+	//if (send(s, message, strlen(message), 0) < 0) {
+	//	cout << "Send Failed" << endl;
+	//	return 1;
+	//}
+	//else {
+	//	cout << "sent" << endl;
+	//}
 
 	//				NEW
 	string user = "";
@@ -100,9 +103,8 @@ int main() {
 	getline(cin, user);
 
 	// use send msg function to send initial function.  not created yet 11:31:4/24/16
-	//sendMsg(1);
-	//_beginthread(listen, 0, (void *)&s);  // create listen function for second thread
-	//closesocket(s);
+	sendMsg(1);
+	_beginthread(listen, 0, (void *)&s);  // create listen function for second thread
 	char action = 'c';
 
 	while (action != 'q') {
@@ -181,7 +183,7 @@ void *get_in_addr(struct sockaddr *sa) {
 
 void sendMsg(int msgType) {
 	struct addrinfo serv, *server_info;
-	int return_value;
+	//int return_value;
 	char *message;
 	string msg = "";
 
@@ -194,7 +196,9 @@ void sendMsg(int msgType) {
 			}
 			SOCKET s = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
 			connect(s, server_info->ai_addr, server_info->ai_addrlen);*/
-			message = "1;aldo;34567#";
+			msg = "1;aldo;34567#";
+			message = new char[msg.length() + 1];
+			strcpy(message, encryptMessage(msg).c_str()); // encrypt message and switch string to char* to send message
 			if (send(s, message, strlen(message), 0) < 0) {		//
 				cout << "Send Failed" << endl;					//
 				exit(1);										//
@@ -203,4 +207,20 @@ void sendMsg(int msgType) {
 		default:
 			break;
 	}
+}
+
+string encryptMessage(string buf) {
+	string dMessage = "";
+	int next = 0;
+	int recv_size = buf.length();
+	for (int i = 0; i < recv_size; i++){
+		if (buf[i] == ';') {
+			next = i++;
+			break;
+		}
+	}
+	for (int j = next; j < recv_size;j++) {
+		buf[j] = encrypt(buf[j]);
+	}
+	return buf;
 }
