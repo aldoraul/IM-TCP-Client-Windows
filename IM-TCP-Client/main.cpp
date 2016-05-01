@@ -39,7 +39,7 @@ struct active_user {
 };
 list<active_user> users;
 SOCKET s;
-
+string user = "";
 int main() {
 	WSADATA wsa;
 
@@ -99,7 +99,6 @@ int main() {
 	//}
 
 	//				NEW
-	string user = "";
 	printf("Enter your IM name: \n");
 	getline(cin, user);
 
@@ -108,7 +107,7 @@ int main() {
 	_beginthread(listen, 0, (void *)&s);  // create listen function for second thread
 	char action = 'c';
 
-	while (action != 'q' || action != 'Q') {
+	while (action != 'q') {
 		if (typeOfMessage == 0) {
 			cout << "Enter q (for quit), s (send message), or c (check messages)" << endl;
 			cin >> action;
@@ -116,6 +115,7 @@ int main() {
 		else {
 			action = 'c';
 		}
+
 		switch (action) {
 			case 'S':
 			case 's':
@@ -137,6 +137,7 @@ int main() {
 			case 'Q':
 			case 'q':
 			{
+				action = 'q';
 				break;
 			}
 			default:
@@ -221,7 +222,7 @@ void sendMsg(int msgType) {
 			}
 			SOCKET s = socket(server_info->ai_family, server_info->ai_socktype, server_info->ai_protocol);
 			connect(s, server_info->ai_addr, server_info->ai_addrlen);*/
-			msg = "1;aldo;34567#";
+			msg = "1;" + user + ";34567#";
 			message = new char[msg.length() + 1];
 			strcpy(message, encryptMessage(msg).c_str()); // encrypt message and switch string to char* to send message
 			if (send(s, message, strlen(message), 0) < 0) {		//
@@ -240,7 +241,7 @@ string encryptMessage(string buf) {
 	int recv_size = buf.length();
 	for (int i = 0; i < recv_size; i++){
 		if (buf[i] == ';') {
-			next = i++;
+			next = ++i;
 			break;
 		}
 	}
