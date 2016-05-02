@@ -229,6 +229,7 @@ void sendMsg(int msgType) {
 				cout << "Send Failed" << endl;					//
 				exit(1);										//
 			}
+			//closesocket(s);
 		}
 		default:
 			break;
