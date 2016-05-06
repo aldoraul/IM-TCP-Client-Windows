@@ -30,9 +30,11 @@ char *server = "192.168.10.200";
 char *port = "34567";
 int typeOfMessage = 0;
 char server_reply[1000];
+string serv_reply = "";
 void listen(void *);		// listen to socket continuesly with second thread
 int New_Process(SOCKET);
 void sendMsg(int);
+string decryptMessage(string);
 string encryptMessage(string);
 struct active_user {
 	string user;
@@ -114,7 +116,7 @@ int main() {
 					printf("No new Messages\n");
 				else {
 					printf("\n\nNew Message Arrived \n");
-					cout << server_reply << endl;
+					cout << serv_reply << endl;
 					typeOfMessage = 0;
 				}
 				break;
@@ -228,6 +230,8 @@ int New_Process(SOCKET fd) {
 	printf("thread 2 yes");
 	int	cc;
 	cc = recv(fd, server_reply, sizeof server_reply, 0);
+	server_reply[cc] = '\0';
+	serv_reply = decryptMessage(server_reply);
 	typeOfMessage = 4;
 	closesocket(fd);
 	return 0;
@@ -280,6 +284,23 @@ string encryptMessage(string buf) {
 	}
 	for (int j = next; j < recv_size;j++) {
 		buf[j] = encrypt(buf[j]);
+	}
+	return buf;
+}
+
+string decryptMessage(string buf) {
+	int recv_size = buf.length();
+	//cout << recv_size << endl;
+	int next = 0;
+	for (int i = 0; i < recv_size; i++) {
+		if (buf[i] == ';') {
+			next = ++i;
+			break;
+		}
+
+	}
+	for (int j = next; j < recv_size; j++) {
+		buf[j] = decrypt(buf[j]);
 	}
 	return buf;
 }
