@@ -1,12 +1,15 @@
 ﻿  main.cpp
-c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(133): warning C4553: '==': operator has no effect; did you intend '='?
-c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(70): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'WCHAR *'
-  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(70): note: consider using '%ls' in the format string
-  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(70): note: consider using '%lls' in the format string
-  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(70): note: consider using '%Ls' in the format string
-  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(70): note: consider using '%ws' in the format string
-c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(60): warning C4101: 'p': unreferenced local variable
-c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(49): warning C4101: 'server': unreferenced local variable
-c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(211): warning C4101: 'serv': unreferenced local variable
-c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(211): warning C4101: 'server_info': unreferenced local variable
+c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(54): warning C4101: 'server': unreferenced local variable
+c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(56): warning C4101: 'return_value': unreferenced local variable
+c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(175): warning C4477: 'fprintf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'WCHAR *'
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(175): note: consider using '%ls' in the format string
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(175): note: consider using '%lls' in the format string
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(175): note: consider using '%Ls' in the format string
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(175): note: consider using '%ws' in the format string
+c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(161): warning C4101: 'recv_size': unreferenced local variable
+c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(251): warning C4477: 'printf' : format string '%s' requires an argument of type 'char *', but variadic argument 1 has type 'WCHAR *'
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(251): note: consider using '%ls' in the format string
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(251): note: consider using '%lls' in the format string
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(251): note: consider using '%Ls' in the format string
+  c:\users\aldo\documents\visual studio 2015\projects\im-tcp-client\im-tcp-client\main.cpp(251): note: consider using '%ws' in the format string
   IM-TCP-Client.vcxproj -> C:\Users\aldo\Documents\Visual Studio 2015\Projects\IM-TCP-Client\Debug\IM-TCP-Client.exe
